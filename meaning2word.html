@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<head>
+    <title>sugoi-OTuMu</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<style>
+    .word_in_question {
+        font-weight: bold;
+        font-size: 150%;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+</style>
+
+<div style="max-width: 80vw; margin: auto;">
+    <img src="logo.png" style="width:80vw" alt="sugoi**OT**u**M**u">
+
+    <div id="res">
+
+    </div>
+</div>
+
+<script>
+    const json_url = new URL(location.href).searchParams.get("json_url");
+    const res = document.getElementById("res");
+
+    fetch(json_url)
+        .then((response) => response.json())
+        .then(dictionary => {
+            const words = dictionary.words;
+            const word = (() => {
+                while (true) {
+                    const choice = words[Math.floor(Math.random() * words.length)];
+                    if (JSON.stringify(choice.translations).includes("（人名）")) {
+                        continue;
+                    } else {
+                        return choice;
+                    }
+                }
+            })();
+            console.log(word);
+
+            const translations = word.translations;
+            const translations_text = document.createTextNode(JSON.stringify(translations));
+
+            const translations_div = document.createElement("div");
+            translations_div.appendChild(translations_text);
+
+            const see_answer_button = document.createElement("button");
+            see_answer_button.appendChild(document.createTextNode("答えを見る"));
+            see_answer_button.addEventListener("click", () => showAnswer(word));
+
+            res.appendChild(translations_div);
+            res.appendChild(see_answer_button);
+        });
+
+    function showAnswer(word) {
+        res.removeChild(res.lastChild);
+
+        const new_word_button = document.createElement("button");
+        new_word_button.appendChild(document.createTextNode("別の単語"));
+        new_word_button.addEventListener("click", () => { location.reload() });
+
+        const end_button = document.createElement("button");
+        end_button.appendChild(document.createTextNode("終える"));
+        end_button.addEventListener("click", () => { location.href = "index.html"; });
+
+        const buttons_div = document.createElement("div");
+        buttons_div.appendChild(new_word_button);
+        buttons_div.appendChild(end_button);
+
+        const wordform_text = document.createTextNode(word.entry.form);
+        const wordform_div = document.createElement("div");
+        wordform_div.appendChild(wordform_text);
+        wordform_div.classList.add("word_in_question");
+
+        res.appendChild(buttons_div);
+        res.appendChild(wordform_div);
+    }
+
+</script>

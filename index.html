@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+<head>
+    <title>sugoi-OTuMu</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script>
+        function jumpTo(page) {
+            const params = new URLSearchParams({ json_url: document.getElementById("json_url").value });
+            location.href = `./${page}?${params}`;
+        }
+    </script>
+</head>
+
+<div style="max-width: 80vw; margin: auto;">
+    <img src="logo.png" style="width:80vw" alt="sugoi**OT**u**M**u">
+
+    <select id="json_url">
+        <option>https://raw.githubusercontent.com/jurliyuuri/bhaataan/master/bhat.json</option>
+    </select><br>
+
+    <button onclick="jumpTo('word2meaning.html')">単語→意味</button>
+    <button onclick="jumpTo('meaning2word.html')">意味→単語</button>
+</div>
